@@ -1,18 +1,24 @@
 module rest;
 
+import std.process;
+import std.range;
+
 import vibe.d;
+
+import process;
+
 
 @path("/")
 interface MyAPI
 {
 	@path("qsub.json") @method(HTTPMethod.POST)
-	string qsub(string jobcommad, string jsondata);
+	void qsub(string[] jobcommad);
 
 	@path("qdel.json") @method(HTTPMethod.PUT)
 	bool qdel(string jobId);
 
-	@path("qstat.json") @method(HTTPMethod.GET)
-	string qstat();
+	@path("qdelALL.json") @method(HTTPMethod.PUT)
+	bool qdelall();
 }
 
 
@@ -21,20 +27,34 @@ final class MyAPIImpl : MyAPI
 	this() {}
 
 
-	string qsub(string jobcmmand, string jsondata)
+	void qsub(string[] jobcommands)
 	{
-		return "0";
+		foreach(cmd; jobcommands){
+			auto pipe = pipeShell("qsub", Redirect.stdin);
+			{
+				import std.stdio;
+				auto writer = pipe.stdin.lockingTextWriter;
+				.put(writer, cmd);
+				writeln(cmd);
+			}
+			pipe.stdin.flush();
+			pipe.stdin.close();
+		}
 	}
 
 
 	bool qdel(string jobId)
 	{
-		return false;
+		auto pid = spawnShell("qdel " ~ jobId);
+		pid.waitPid(100.msecs);
+		return true;
 	}
 
 
-	string qstat()
+	bool qdelall()
 	{
-		return "";
+		auto pid = spawnShell("qdel ALL");
+		pid.waitPid(100.msecs);
+		return true;
 	}
 }

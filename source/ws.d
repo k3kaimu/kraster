@@ -20,7 +20,7 @@ string makeWSEvent(T...)(WebSocketEventType tag, T nameAndData)
 
     foreach(i, ref e; nameAndData){
         static if(i % 2 == 0){
-            static if(is(typeof(JSONValue(nameAndData[i+1]))))
+            static if(is(typeof(nameAndData[i+1]) == Json))
                 obj[nameAndData[i]] = nameAndData[i+1];
             else
                 obj[nameAndData[i]] = nameAndData[i+1].to!string;
@@ -44,9 +44,24 @@ void userStatusMonitoring(scope WebSocket socket)
 }
 
 
-void handleWebSocket(scope WebSocket socket)
+void clusterStatusMonitoring(scope WebSocket socket)
 {
-	auto userStatusMonitoringWriter = runTask(toDelegate(&userStatusMonitoring), socket);
+    while(socket.connected){
+        ClusterState state = getClusterStateNow();
+        
+        socket.send(makeWSEvent(WebSocketEventType.updateClusterStatus,
+            "data", state.serializeToJson()));
+        
+        sleep(30.seconds);
+    }
+}
+
+
+void onWSHandshake(scope WebSocket socket)
+{
+    auto userStatusMonitoringWriter = runTask(toDelegate(&userStatusMonitoring), socket);
+    auto clusterStatusMonitoringWriter = runTask(toDelegate(&clusterStatusMonitoring), socket);
 
     userStatusMonitoringWriter.join();
+    clusterStatusMonitoringWriter.join();
 }

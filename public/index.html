@@ -10,6 +10,7 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
   <link rel="stylesheet" type="text/css" href="css/dotter.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
+  <!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> -->
   <style type="text/css">
   body { padding-top: 80px; }
   @media ( min-width: 768px ) {
@@ -84,8 +85,81 @@
 
 <div class="container">
   <h1 id="job-submit">Submit JOB</h1>
+
+<!-- <div class="form-group"> -->
+<!-- <label for="comment">Job Script:</label> -->
+<pre>
+<textarea rows="10" data-bind="value: jobScript">
+</textarea>
+</pre>
+<pre>
+<textarea rows="2" data-bind="value: dataList">
+</textarea>
+</pre>
+<button type="button" data-bind="click: enqueueJob" class="btn btn-primary">submit!</button>
+<!-- </div> -->
+
+<!-- <div class="form-group"> -->
+<!-- <label for="comment">Job Data Generator:</label> -->
+<!-- <pre>
+<textarea rows="5" data-bind="text: jobScript">
+</textarea>
+</pre> -->
+<!-- </div> -->
+
+
   <h1 id="my-status">Your Status</h1>
-  <h1 id="cluster-status">Cluster Status</h1>
+
+  <button type="button" data-bind="click: deleteAll" class="btn btn-primary">Delete ALL!</button>
+  <table class="table">
+      <thead>
+          <tr><th>Job ID</th><th>State</th></tr>
+      </thead>
+      <tbody data-bind="foreach: jobs">
+          <tr>
+              <td data-bind="text: id"></td>
+              <td data-bind="text: state"></td>
+              <td>
+                <button type="button" data-bind="click: $parent.deleteJob" class="btn btn-primary">delete</button>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+
+  <h1 id="cluster-status">Users</h1>
+
+    <table class="table">
+      <thead>
+          <tr><th>User ID</th><th>Jobs</th><th>CPUs</th></tr>
+      </thead>
+      <tbody data-bind="foreach: users">
+          <tr>
+              <td data-bind="text: userid"></td>
+              <td data-bind="text: jobs"></td>
+              <td data-bind="text: cpus"></td>
+          </tr>
+      </tbody>
+  </table>
+
+  <h1 id="cluster-status">Node Status</h1>
+
+  <div data-bind="text: totalCPUs"></div>
+
+  <table class="table">
+      <thead>
+          <tr><th>Node ID</th><th>CPUs</th><th>Users</th></tr>
+      </thead>
+      <tbody data-bind="foreach: nodes">
+          <tr>
+              <td data-bind="text: nodeid"></td>
+              <td data-bind="text: cpus"></td>
+              <!-- ko foreach: $data.users -->
+              <td data-bind="text: $data"></td>
+              <!-- /ko -->
+          </tr>
+      </tbody>
+  </table>
+
   <h1 id="config">Config</h1>
 </div>
 
@@ -94,7 +168,9 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/myapi.js"></script>
 <script src="/js/knockout-3.4.0.js"></script>
+<script src="/js/mustache.min.js"></script>
 <script src="/js/main.js"></script>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script> -->
 
 
 </body>

@@ -2,7 +2,7 @@ import vibe.d;
 import rest;
 import ws;
 
-immutable portNum = "8080";
+immutable portNum = "8001";
 
 shared static this()
 {
@@ -13,6 +13,7 @@ shared static this()
 
 	router
 	.registerRestInterface(new MyAPIImpl, restsettings)
+	.get("/ws", handleWebSockets(&onWSHandshake))
 	.get("/myapi.js", serveRestJSClient!MyAPI(restsettings))
 	.get("*", serveStaticFiles("public/"));
 

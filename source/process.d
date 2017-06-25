@@ -2,6 +2,7 @@ module process;
 
 import vibe.d;
 
+import std.stdio;
 import std.process;
 import std.ascii;
 import std.datetime;
@@ -23,10 +24,10 @@ auto waitPid(Pid pid, Duration dur = 1.seconds)
 
 struct JobState
 {
-    enum State
+    enum State : string
     {
-        queue,
-        running,
+        queue = "queue",
+        running = "running",
     }
 
     string id;
@@ -39,11 +40,12 @@ struct JobState
 
 JobState[] getMyJobListNow()
 {
-    auto pipe = pipeProcess("qstat -a");
+    auto pipe = pipeShell("qstat -a");
     pipe.pid.waitPid(100.msecs);
 
     JobState[] jobs;
     foreach(line; pipe.stdout.byLine){
+        if(line.length == 0) continue;
         if(!line[0].isDigit) continue;
         auto ss = line.splitter(" ").map!(chomp).filter!"!a.empty".array();
         JobState job;
@@ -51,10 +53,12 @@ JobState[] getMyJobListNow()
         job.username = ss[1].dup;
         job.queue = ss[2].dup;
         job.jobname = ss[3].dup;
-        job.state = ss[4] == "R" ? JobState.State.running : JobState.State.queue;
+        job.state = ss[9] == "R" ? JobState.State.running : JobState.State.queue;
         jobs ~= job;
+        writeln(ss);
     }
 
+    writeln(jobs);
     return jobs;
 }
 
@@ -88,7 +92,7 @@ struct ClusterState
 
 ClusterState getClusterStateNow()
 {
-    auto pipe = pipeProcess("/gpfs/work/my016/tool/qwatch.pl");
+    auto pipe = pipeShell("/gpfs/work/my016/tool/qwatch.pl");
     pipe.pid.waitPid(100.msecs);
 
     ClusterState state;
@@ -111,6 +115,7 @@ ClusterState getClusterStateNow()
     lines = lines.find!(a => a.startsWith("User ID"));
     lines = lines[2 .. $];
     foreach(line; lines){
+        if(line.length == 0) continue;
         if(line[0] == '-') break;
 
         ClusterState.UserState user;
@@ -126,5 +131,6 @@ ClusterState getClusterStateNow()
         state.users ~= user;
     }
 
+    writeln(state);
     return state;
 }
