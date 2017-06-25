@@ -1,0 +1,18 @@
+table {
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  width: 256px;
+}
+td {
+  border: 1px solid gray;
+  width: 16px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.dotimg {
+  -ms-interpolation-mode: nearest-neighbor;
+  image-rendering: -webkit-crisp-edges;       
+  image-rendering: -moz-crisp-edges;         
+  image-rendering: pixelated;
+}

@@ -1,0 +1,121 @@
+
+.progressBar {
+  position: relative;
+  width: 95%;
+  height: 75px;
+  margin: 20px auto;
+  border: 3px solid #fab617;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progressBar div {
+  position: relative;
+  height: 100%;
+  background-color: #fab617;
+}
+
+.progressBar .progressText {
+  position: absolute;
+  margin: 0 auto;
+  top: 12px;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+}
+
+#color-pallet li {
+  width: 30px;
+  height: 30px;
+  display:inline-block;
+}
+
+
+#canvas {
+  border:1px solid gray;
+  margin-bottom: 15px;
+}
+
+body bigFontSize {
+  font-size: 32px;
+}
+
+body bigFontSize h1 {
+  font-size: 72px;
+}
+
+body h2 bigFontSize {
+  font-size: 54px;
+}
+
+body h3 bigFontSize {
+  font-size: 48px;
+}
+
+body h4 bigFontSize {
+  font-size: 42px;
+}
+
+body h5 bigFontSize {
+  font-size: 36px;
+}
+
+body h6 bigFontSize {
+  font-size: 32px;
+}
+
+/*fade out のスピード*/
+.modal.fade {
+  transition-duration: 0.1s;
+}
+
+/*fade in のスピード*/
+.modal.in {
+  transition-duration: 0.1s;
+}
+
+/*slide out のスピード*/
+.modal.fade .modal-dialog{
+  transition-duration: 0.1s;
+  transform: translate3d(0, -5%, 0);
+}
+
+/*slide in のスピード*/
+.modal.in .modal-dialog{
+  transition-duration: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+
+.image-block {
+    border: 3px solid white ;
+    background-color: black;
+    padding: 0px;
+    margin: 0px;
+    height:200px;
+    text-align: center;
+    vertical-align: bottom;
+}
+.image-block > p {
+    width: 100%;
+    height: 100%;
+    font-weight: normal;
+    font-size: 19px;
+    padding-top: 100px;
+    background-color: rgba(3,3,3,0.0);
+    color: rgba(6,6,6,0.0);
+}
+
+.image-block > p {
+    display:none;
+}
+
+.image-block:hover > p {
+    background-color: rgba(3,3,3,0.5);    
+    color: white;  
+    display: block;
+}
+
+.modalImage {
+  width: 300px;
+  height: 300px;
+}

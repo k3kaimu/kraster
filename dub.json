@@ -1,0 +1,13 @@
+{
+	"name": "kraster",
+	"authors": [
+		"Kazuki Komatsu"
+	],
+	"dependencies": {
+		"vibe-d": "~>0.7.31"
+	},
+	"description": "Web client for TUT Cluster",
+	"copyright": "Copyright © 2017, Kazuki Komatsu",
+	"license": "NYSL",
+	"versions": ["VibeDefaultMain"]
+}
